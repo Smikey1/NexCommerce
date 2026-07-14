@@ -6,11 +6,19 @@ class UserRepository {
     }
 
     async findByEmail(email) {
-        return await User.findOne({email});
+        return await User.findOne({email}).select("+password");
     }
 
-    async findByEmailWithPassword(email) {
-        return await User.findOne({email}).select("+password");
+    async findByPhone(phone) {
+        return await User.findOne({phone}).select("+password");
+    }
+
+    async findByEmailOrPhoneWithPassword(email, phone) {
+        if (email !== null){
+            return this.findByEmail(email);
+        }else if (phone !== null){
+            return this.findByPhone(phone);
+        } else null;
     }
 
     async findById(id) {

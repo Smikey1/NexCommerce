@@ -10,7 +10,7 @@ class AuthService {
         const {email,password,phoneNumber} = LoginRequest(data); 
         const normalizedEmail = email.toLowerCase().trim();
 
-        const user = await userRepository.findByEmailWithPassword(normalizedEmail);
+        const user = await userRepository.findByEmailOrPhoneWithPassword(normalizedEmail, phoneNumber);
 
         if (!user) {
             throw new UserUnauthorizedError();
