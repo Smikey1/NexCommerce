@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { errorHandler } from "./shared/middlewares/errorHandler.js";
-import fileUpload from "express-fileupload"
-
+import fileUpload from "express-fileupload";
+import { authModule } from "./modules/auth/auth.module.js"
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 })
 
 // modules use here.
-
+authModule(app);
 
 //custom middleware
 app.use(errorHandler);

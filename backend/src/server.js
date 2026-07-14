@@ -5,7 +5,7 @@ import { Env } from "./shared/env/env.js";
 const PORT = Env.PORT;
 try {
     await connectDB();
-    app.listen(5500, () => {
+    app.listen(PORT, () => {
         console.log(`🚀 Server running on http://localhost:${PORT}`);
     });
 } catch (err) {
