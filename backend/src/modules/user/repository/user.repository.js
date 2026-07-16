@@ -18,7 +18,7 @@ class UserRepository {
             return this.findByEmail(email);
         }else if (phone !== null){
             return this.findByPhone(phone);
-        } else null;
+        } else return null;
     }
 
     async findById(id) {

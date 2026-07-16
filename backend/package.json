@@ -14,7 +14,6 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
-    "bullmq": "^5.80.1",
     "cors": "^2.8.6",
     "crypto": "^1.0.1",
     "dayjs": "^1.11.21",
@@ -29,9 +28,8 @@
     "nodemon": "^3.1.14",
     "redis": "^6.1.0",
     "socket.io": "^4.8.3",
-    "swagger-jsdoc": "^6.3.0",
-    "swagger-ui-express": "^5.0.1",
     "winston": "^3.19.0",
+    "libphonenumber-js": "^1.13.8",
     "zod": "^4.4.3"
   },
   "devDependencies": {

@@ -3,7 +3,7 @@ import { Env } from "../env/env.js";
 
 export const generateAccessToken = (payload) => {
     return jwt.sign(
-        payload,
+        {...payload, type:"access token"},
      Env.AccessTokenSecretKey,
 {
     expiresIn: Env.AccessTokenExpirationTime || "15m",
@@ -13,7 +13,7 @@ export const generateAccessToken = (payload) => {
 
 export const generateRefreshToken = (payload) => {
     return jwt.sign(
-       payload,
+        { ...payload, type: "refresh token" },
         Env.RefreshTokenSecretKey,
         {
             expiresIn: Env.RefreshTokenExpirationTime || "7d",
