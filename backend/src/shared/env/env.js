@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const Env = {
-    MONGO_URL: process.env.MONGO_URL,
+    MONGO_URI: process.env.MONGO_URI,
     PORT: process.env.PORT,
     AccessTokenSecretKey: process.env.ACCESS_TOKEN_SECRET_KEY,
     RefreshTokenSecretKey: process.env.REFRESH_TOKEN_SECRET_KEY,

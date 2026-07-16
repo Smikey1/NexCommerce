@@ -14,7 +14,6 @@ export const validate = (schema) => {
                 error.statusCode = 400;
                 error.message = error.issues[0].message;
             }
-
             next(error);
         }
     };
