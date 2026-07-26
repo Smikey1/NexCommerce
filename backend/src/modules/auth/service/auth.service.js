@@ -1,12 +1,15 @@
 import { userRepository } from "../../user/repository/user.repository.js";
-import { generateAccessToken, generateRefreshToken } from "../../../shared/utils/token.js";
+import { generateAccessToken, generateRefreshToken } from "../../../shared/security/jwt.js";
 import { UserUnauthorizedError } from "../error/user-unauthorized.error.js";
 import { UserAccountNotActiveError } from "../error/user-not-active.error.js";
 import { LoginRequest } from "../dto/request/login.request.js";
-import { generateHash, isMatched } from "../utils/bcrypt.js";
 import { RegisterRequest } from "../dto/request/register.request.js";
 import { UserAlreadyExistError } from "../error/user-already-exist.error.js";
 import { AUTH_ERROR } from "../constant/auth.error.js";
+import { compare, hash } from "../../../shared/security/password.js";
+import { userEventPublisher } from "../../../messaging/events/user.event.js";
+import { NOTIFICATION_CHANNEL } from "../../notification/constant/notification.constant.js";
+import { HTML_TEMPLATE } from "../../notification/templates/html.template.js";
 
 class AuthService {
     async login(data) {
@@ -23,7 +26,7 @@ class AuthService {
             throw new UserAccountNotActiveError(); 
         }
 
-        const isPasswordCorrect = isMatched(password, user.password);
+        const isPasswordCorrect = compare(password, user.password);
 
         if (!isPasswordCorrect){
             throw new UserUnauthorizedError();
@@ -58,15 +61,21 @@ class AuthService {
             throw new UserAlreadyExistError(AUTH_ERROR.USER_PHONE_NUMBER_ALREADY_EXIST);
         }
 
-        const hashPassword = await generateHash(password);
+        const hashPassword = await hash(password)
         
         const result = await userRepository.create({ firstName, lastName, email, phone:phoneNumber, password:hashPassword }) 
         
         // send verify email
+        const userDataPayload = {
+            userId: result._id,
+            firstName: result.firstName,
+            email: result.email,
+            phone: result.phone
+        }
+        userEventPublisher.created(userDataPayload)
         
         return result ;
-
-                
+            
     }
 }
 

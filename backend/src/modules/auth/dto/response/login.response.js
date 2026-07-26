@@ -1,4 +1,5 @@
 export const LoginResponse = (data) => {
+    const {user} = data.user; // de-sturcture
     return {
         user: {
             id:data.user._id,

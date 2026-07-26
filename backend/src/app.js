@@ -3,6 +3,7 @@ import cors from "cors";
 import { errorHandler } from "./shared/middlewares/errorHandler.js";
 import fileUpload from "express-fileupload";
 import { authModule } from "./modules/auth/auth.module.js"
+import { notificationModule } from "./modules/notification/notification.module.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 // modules use here.
 authModule(app);
+notificationModule(app);
 
 //custom middleware
 app.use(errorHandler);
