@@ -1,8 +1,9 @@
 import crypto from "crypto";
 
-export const generateHashToken = () => {
-    const token = crypto.randomBytes(32).toString("hex");
-    return crypto.createHash("sha256").update(token).digest("hex");
+export const generateRawAndHashToken = () => {
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const hashToken = crypto.createHash("sha256").update(rawToken).digest("hex");
+    return {rawToken,hashToken}
 }
 
 export const generateApiKey = () => {

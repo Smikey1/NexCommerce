@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  emailVerifiedAt: {
+    type: Date,
+    default: null,
+  },
   pushNotificationToken: String,
   emailVerificationToken: String,
   emailVerificationExpires: Date,

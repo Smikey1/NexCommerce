@@ -51,7 +51,7 @@ class AuthService {
         const {firstName, lastName, email, phoneNumber, password} = RegisterRequest(data)
         
         const trimmedEmail = email.trim();
-        const userWithEmailExist = await userRepository.findByEmail(email);
+        const userWithEmailExist = await userRepository.findByEmail(trimmedEmail);
         if(userWithEmailExist){
             throw new UserAlreadyExistError();
         }
@@ -65,6 +65,7 @@ class AuthService {
         
         const result = await userRepository.create({ firstName, lastName, email, phone:phoneNumber, password:hashPassword }) 
         
+        // http://localhost:5000/verify-email?token=1234
         // send verify email
         const userDataPayload = {
             userId: result._id,
@@ -72,7 +73,8 @@ class AuthService {
             email: result.email,
             phone: result.phone
         }
-        userEventPublisher.created(userDataPayload)
+        userEventPublisher.created(userDataPayload);
+        
         
         return result ;
             
