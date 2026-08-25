@@ -24,6 +24,21 @@ class UserRepository {
     async findById(id) {
         return await User.findById(id);
     }
+
+    async markEmailAsVerified(id) {
+        return await User.findByIdAndUpdate(
+            id,
+            {
+                $set: {
+                    isEmailVerified: true,
+                    emailVerifiedAt: new Date(),
+                },
+            },
+            {
+                new: true,
+            }
+        );
+    }
 }
 
 export const userRepository = new UserRepository();

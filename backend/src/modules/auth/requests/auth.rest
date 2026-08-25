@@ -1,4 +1,4 @@
-@BASE_URL = http://localhost:5500/api/v1/auth
+@BASE_URL = http://localhost:5000/api/v1/auth
 @TOKEN = 1
 
 ### Register User
@@ -8,8 +8,8 @@ Content-Type: application/json
 {
   "firstName": "John",
   "lastName": "don",
-  "phoneNumber": "+61412375618",
-  "email": "john2@gmail.com",
+  "phoneNumber": "+61426485888",
+  "email": "kandelgrishma2477@gmail.com",
   "password": "Password123!"
 }
 

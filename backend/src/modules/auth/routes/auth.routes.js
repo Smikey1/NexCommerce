@@ -10,4 +10,6 @@ router.post("/login", validate(loginSchema), authController.login);
 //register
 router.post("/register", validate(registerSchema), authController.register);
 
+router.get("/verify-email", authController.verifyEmail);
+
 export default router; 

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Constant } from "../constant/user.constant.js";
+import { USER_CONSTANT } from "../constant/user.constant.js";
 
 const userSchema = new mongoose.Schema({
   firstName:{
@@ -38,10 +38,21 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isPhoneNumberVerified: {
+    type: Boolean,
+    default: false,
+  },
+  emailVerifiedAt: {
+    type: Date,
+    default: null,
+  },
+  pushNotificationToken: String,
+  emailVerificationToken: String,
+  emailVerificationExpires: Date,
   isActive: {
     type: Boolean, 
     default: true,
   },
 }, {timestamps: true});
 
-export const User = mongoose.model(Constant.USER_MODEL, userSchema);
+export const User = mongoose.model(USER_CONSTANT.USER_MODEL, userSchema);

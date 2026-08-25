@@ -1,0 +1,46 @@
+import winston from "winston";
+
+export const logger = winston.createLogger({
+
+    level: process.env.LOG_LEVEL || "info",
+
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+    ),
+
+
+    transports: [
+
+        // Write all logs to combined.log
+        new winston.transports.File({
+            filename: "logs/combined.log"
+        }),
+
+
+        // Only errors
+        new winston.transports.File({
+            filename: "logs/error.log",
+            level: "error"
+        })
+
+    ]
+
+});
+
+
+// Development console logging
+if (process.env.NODE_ENV !== "production") {
+
+    logger.add(
+        new winston.transports.Console({
+
+            format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.simple()
+            )
+
+        })
+    );
+
+}

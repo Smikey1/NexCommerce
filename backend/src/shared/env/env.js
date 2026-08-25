@@ -2,10 +2,42 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const Env = {
+    FRONTEND_URL: process.env.FRONTEND_URL,
     MONGO_URI: process.env.MONGO_URI,
     PORT: process.env.PORT,
-    AccessTokenSecretKey: process.env.ACCESS_TOKEN_SECRET_KEY,
-    RefreshTokenSecretKey: process.env.REFRESH_TOKEN_SECRET_KEY,
-    AccessTokenExpirationTime: process.env.ACCESS_TOKEN_EXPIRATION_TIME,
-    RefreshTokenExpirationTime: process.env.REFRESH_TOKEN_EXPIRATION_TIME,
+    ACCESS_TOKEN_SECRET_KEY: process.env.ACCESS_TOKEN_SECRET_KEY,
+    REFRESH_TOKEN_SECRET_KEY: process.env.REFRESH_TOKEN_SECRET_KEY,
+    ACCESS_TOKEN_EXPIRATION_TIME: process.env.ACCESS_TOKEN_EXPIRATION_TIME,
+    REFRESH_TOKEN_EXPIRATION_TIME: process.env.REFRESH_TOKEN_EXPIRATION_TIME,
+
+    RABBITMQ_URL: process.env.RABBITMQ_URL,
+
+    // RESEND
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+
+    // SMTP
+    SMTP_HOST: process.env.SMTP_HOST,
+    SMTP_PORT: process.env.SMTP_PORT,
+    SMTP_SECURE: process.env.SMTP_SECURE,
+    SMTP_USER: process.env.SMTP_USER,
+    SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+
+    // TWilio
+    TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER,
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+
+    // Firebase
+    FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+    FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
+    FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
+
+    API_BASE_URL: process.env.API_BASE_URL,
+    EMAIL_VERIFICATION_EXPIRATION_MS: Number(
+    process.env.EMAIL_VERIFICATION_TOKEN_EXPIRATION_MS
+),
+
+EMAIL_VERIFICATION_RESEND_COOLDOWN_MS: Number(
+    process.env.EMAIL_VERIFICATION_RESEND_COOLDOWN_MS
+)
 }

@@ -1,0 +1,28 @@
+@BASE_URL = http://localhost:5500/api/v1/notifications
+@TOKEN = 1
+
+### Get all notification
+GET {{BASE_URL}}/
+Content-Type: application/json
+
+
+### Create and Send Notification
+
+POST {{BASE_URL}}/ 
+Content-Type: application/json
+
+{
+  "user": "6a5e011120e99c6b89287a7b",
+  "title": "Order Confirmed",
+  "message": "Your order #12345 has been placed successfully.",
+  "channels": [
+    "IN_APP",
+    "EMAIL",
+    "SMS"
+  ],
+  "metadata": {
+    "email": "john@example.com",
+    "orderId": "12345",
+    "type": "ORDER_CREATED"
+  }
+}
