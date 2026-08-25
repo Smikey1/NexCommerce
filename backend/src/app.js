@@ -1,9 +1,10 @@
 import express from "express";
 import cors from "cors";
-import { errorHandler } from "./shared/middlewares/errorHandler.js";
 import fileUpload from "express-fileupload";
+import { errorHandler } from "./shared/middlewares/errorHandler.js";
 import { authModule } from "./modules/auth/auth.module.js"
 import { notificationModule } from "./modules/notification/notification.module.js";
+import { categoryModule } from "./modules/category/category.module.js"
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 // modules use here.
 authModule(app);
 notificationModule(app);
+categoryModule(app);
 
 //custom middleware
 app.use(errorHandler);

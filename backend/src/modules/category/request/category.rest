@@ -1,0 +1,43 @@
+@BASE_URL = http://localhost:5000/api/v1/categories
+@TOKEN = 1
+@REFRESH_TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YTY3MWZhYmYzNDY1ZTc2YjM4NTdlM2EiLCJzZXNzaW9uSWQiOiJhYTlkMDlmYS05MGViLTRkNWItYjYyYy0xYmM2MTdkYzA3M2IiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4NTE5ODU4MCwiZXhwIjoxNzg1ODAzMzgwfQ.1-khiC9gwa_fIz5p3MfHtreh7uV8ozQJV7lRPSHIQxk
+
+
+### Create Category 
+POST {{BASE_URL}}/
+Content-Type: application/json
+
+{
+  "name": "Fashion Boots",
+  "description": "This is a fashion shoes.",
+  "adminId": "6a70757fe3661971f0b68069"
+}
+
+### Get All Categories
+GET {{BASE_URL}}/
+Content-Type: application/json
+
+### Get Category By Name
+GET {{BASE_URL}}/fashion boots
+Content-Type: application/json
+
+### Update Category By Name
+PATCH {{BASE_URL}}/fashion boots
+Content-Type: application/json
+
+{
+  "name": "cute boots",
+  "description": "This is new fashionable boots."
+}
+
+### Delete Category By Name
+DELETE {{BASE_URL}}/new boots
+Content-Type: application/json
+
+### Mark Category As Active
+PATCH {{BASE_URL}}/new boots/activate
+Content-Type: application/json
+
+### Mark Category As Inactive
+PATCH {{BASE_URL}}/new boots/deactivate
+Content-Type: application/json
