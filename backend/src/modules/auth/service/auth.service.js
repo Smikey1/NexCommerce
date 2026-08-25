@@ -13,9 +13,14 @@ import { HTML_TEMPLATE } from "../../notification/templates/html.template.js";
 import { InvalidEmailVerifiedTokenError } from "../error/invalid-email-verification-token.error.js";
 import {emailVerificationRepository} from "../repository/email-verification.repository.js";
 import {hashToken} from "../../../shared/security/crypto.js";
+import { randomUUID } from "crypto";
+import { sessionRepository } from "../repository/session.repository.js";
+import { Env } from "../../../shared/env/env.js";
+import { TokenType } from "../../../shared/constant/constant.js";
+import {EmailNotVerifiedError} from "../error/user-email-not-verified.error.js";
 
 class AuthService {
-    async login(data) {
+    async login(data, requestMetadata= {}) {
         const {email,password,phoneNumber} = LoginRequest(data); 
         const normalizedEmail = email.toLowerCase().trim();
 
@@ -29,22 +34,45 @@ class AuthService {
             throw new UserAccountNotActiveError(); 
         }
 
-        const isPasswordCorrect = compare(password, user.password);
+        
+        if (!user.isEmailVerified) {
+            throw new EmailNotVerifiedError();
+        }
+
+        const isPasswordCorrect = await compare(password, user.password);
 
         if (!isPasswordCorrect){
             throw new UserUnauthorizedError();
         };
 
-        const payload = {
-            userId: user._id,
-            role: user.role,
-        }
+        const sessionId = randomUUID();
+        const accessToken = generateAccessToken(user._id, user.role);
+        const refreshToken = generateRefreshToken(user._id, sessionId);
 
-        const accessToken = generateAccessToken(payload);
-        const refreshToken = generateRefreshToken(payload);
+        const refreshTokenExpiresAt = new Date(
+            Date.now() + Env.REFRESH_TOKEN_EXPIRATION_MS
+        );
+
+        await sessionRepository.create({
+            sessionId, 
+            user: user._id,
+            refreshTokenHash: hashToken(refreshToken),
+            expiresAt: refreshTokenExpiresAt,
+            userAgent: requestMetadata.userAgent,
+            ipAddress: requestMetadata.ipAddress,
+        }); 
+
+        const safeUser = {
+          id: user._id.toString(),
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          phoneNumber: user.phoneNumber,
+           role: user.role,
+        };
 
         return {
-            user,
+            user:safeUser,
             accessToken,
             refreshToken,
         };
@@ -161,6 +189,94 @@ class AuthService {
 
         return {message: "Email verified successfully."} // 
     };
+
+    refreshToken = async (refreshToken) => {
+            if (!refreshToken) {
+                throw new UserUnauthorizedError();
+            }
+
+            const payload = verifyRefreshToken(refreshToken);
+
+            if (!payload ) {
+                throw new UserUnauthorizedError(AUTH_ERROR.INVALID_REFRESH_TOKEN);
+            }
+
+            if (payload.type !== TokenType.REFRESH ){
+                throw new UserUnauthorizedError();
+            }
+
+            const session = await sessionRepository.findActiveBySessionId(payload.sessionId);
+
+            if (!session){
+                throw new UserUnauthorizedError();
+            }
+
+            if (session.user.toString() !== payload.userId){
+                 await sessionRepository.revokeBySessionId(payload.sessionId);
+                throw new UserUnauthorizedError();
+            }
+
+            const incomingRefreshTokenHash = hashToken(refreshToken);
+
+            if (incomingRefreshTokenHash !== session.refreshTokenHash) {
+                /*
+                    After token refresh, Your server creates new Refresh Token B and replaces the stored hash: hash(A) → hash(B)
+                    in database. 
+
+                    Now Refresh Token A is supposed to be dead. But imagine a hacker previously stole Token A and tries to use it again.
+                    The JWT itself might still technically be valid because its exp hasn't passed yet.
+
+                    But your database says:
+
+                    Stored: hash(Token B)
+                    Incoming: hash(Token A)
+
+                    They don't match.
+
+                    That suggests an old or potentially stolen refresh token is being reused.
+                    Therefore you revoke the whole session:
+                */
+                await sessionRepository.revokeBySessionId(payload.sessionId);
+                throw new UserUnauthorizedError();
+            }
+
+            const user = await userRepository.findById(payload.userId);
+
+            if (!user) {
+                await sessionRepository.revokeBySessionId(payload.sessionId);
+                throw new UserUnauthorizedError();
+            }
+
+            if (!user.isActive) {
+                await sessionRepository.revokeBySessionId(payload.sessionId);
+                throw new UserAccountNotActiveError();
+            }
+
+            const newAccessToken = generateAccessToken (user._id, user.role);
+             const newRefreshToken = generateRefreshToken(user._id, payload.sessionId);
+
+            const refreshTokenExpiresAt = new Date (
+                Date.now() + Env.REFRESH_TOKEN_EXPIRATION_MS
+            );
+
+            const updatedSession = await sessionRepository.updateRefreshToken(
+                payload.sessionId,
+                hashToken(newRefreshToken),
+                refreshTokenExpiresAt
+            );
+
+            // Defensive check in case the session became
+            // revoked/expired between the previous query and update
+            if (!updatedSession) {
+                throw new UserUnauthorizedError();
+            }
+
+            return {
+                accessToken: newAccessToken,
+                refreshToken: newRefreshToken,
+            };
+            
+        };
 
 }
 

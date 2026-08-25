@@ -1,30 +1,65 @@
 import jwt from "jsonwebtoken";
 import { Env } from "../env/env.js";
+import { TokenType } from "../constant/constant.js";
 
-export const generateAccessToken = (payload) => {
-    return jwt.sign({ ...payload, type: "access token" },
-        Env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: Env.ACCESS_TOKEN_EXPIRATION_TIME }
+export const generateAccessToken = (userId, role) => {
+    return jwt.sign(
+        {
+            userId: userId.toString(),
+            role,
+            type: TokenType.ACCESS 
+        },
+        Env.ACCESS_TOKEN_SECRET_KEY,
+        {
+            expiresIn: Env.ACCESS_TOKEN_EXPIRATION_MS || "15m",
+        }
     );
 };
 
-
-export const generateRefreshToken = (payload) => {
-    return jwt.sign({ ...payload, type: "refresh token" },
-        Env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: Env.REFRESH_TOKEN_EXPIRATION_TIME }
+export const generateRefreshToken = (userId, sessionId) => {
+    return jwt.sign(
+        { 
+            userId: userId.toString(),
+            sessionId,
+            type: TokenType.REFRESH 
+        },
+        Env.REFRESH_TOKEN_SECRET_KEY,
+        {
+            expiresIn: Env.REFRESH_TOKEN_EXPIRATION_MS || "7d",
+        }
     );
 };
-
 
 export const verifyAccessToken = (token) => {
-    return jwt.verify(token, ACCESS_TOKEN_SECRET);
+    return verifyToken(
+        token,
+        Env.ACCESS_TOKEN_SECRET_KEY
+    );
 };
-
 
 export const verifyRefreshToken = (token) => {
-    return jwt.verify(token, REFRESH_TOKEN_SECRET);
+    return verifyToken(
+        token,
+        Env.REFRESH_TOKEN_SECRET_KEY
+    );
 };
-
 
 export const decodeToken = (token) => {
     return jwt.decode(token);
+};
+
+// Common verification function
+const verifyToken = (token, secretKey) => {
+    try {
+        return jwt.verify(token, secretKey);
+    } catch (error) {
+        if (
+            error instanceof jwt.TokenExpiredError ||
+            error instanceof jwt.JsonWebTokenError ||
+            error instanceof jwt.NotBeforeError
+        ) {
+            return null;
+        }
+        throw error;
+    }
 };
