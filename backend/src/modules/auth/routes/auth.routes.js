@@ -5,6 +5,7 @@ import { validate } from "../../../shared/middlewares/validate.middleware.js";
 
 const router = Router();
 
+router.post("/refresh-token", authController.refreshAccessToken);
 router.post("/login", validate(loginSchema), authController.login);
 
 //register

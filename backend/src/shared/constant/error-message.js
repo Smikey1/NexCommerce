@@ -19,4 +19,7 @@ export const ERROR_MESSAGE = Object.freeze({
   BAD_GATEWAY: "Bad gateway.",
   SERVICE_UNAVAILABLE: "Service is currently unavailable.",
   GATEWAY_TIMEOUT: "Gateway timeout.",
+
+    // Auth related
+  ACCESS_TOKEN_INVALID_OR_EXPIRED: "Access token is invalid or expired.",
 });
