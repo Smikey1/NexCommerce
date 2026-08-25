@@ -17,19 +17,6 @@ class UserEventConsumer {
             handler: async (event) => {
                 const user = event.data
                 const {verificationUrl,expiresAt} = await emailVerificationService.create(user.userId)
-                const welcomeNotificationPayload = {
-                    user,
-                    notification: {
-                        title: "Welcome to NexCommerce",
-                        message: "Thank you for registering with us.",
-                        channels: [NOTIFICATION_CHANNEL.EMAIL]
-                    },
-                    htmlTemplate: await getHTMLTemplate(HTML_TEMPLATE.WELCOME, {
-                        name: event.data.firstName,
-                        message: "Thank you for registering with us."
-                    })
-                }
-
                 const emailVerificationNotificationPayload = {
                     user,
                     notification: {
@@ -43,7 +30,6 @@ class UserEventConsumer {
                         expiryTime:`${expiresAt}`
                     })
                 }
-                await notificationService.notify(welcomeNotificationPayload)
                 await notificationService.notify(emailVerificationNotificationPayload)
             }
         })

@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isPhoneNumberVerified: {
+    type: Boolean,
+    default: false,
+  },
   emailVerifiedAt: {
     type: Date,
     default: null,

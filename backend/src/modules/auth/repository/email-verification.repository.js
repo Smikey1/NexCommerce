@@ -2,7 +2,7 @@ import { EmailVerificationToken } from "../model/email-verification-token.model.
 
 class EmailVerificationRepository {
     async create(data) {
-        return EmailVerificationToken.create(data);
+        return await EmailVerificationToken.create(data);
     }
 
     async findValidByTokenHash(tokenHash) {
@@ -16,7 +16,7 @@ class EmailVerificationRepository {
     }
 
     async findLatestByUserId(userId) {
-        return EmailVerificationToken.findOne({
+        return await EmailVerificationToken.findOne({
             userId,
             usedAt: null,
             expiresAt: {
@@ -28,7 +28,7 @@ class EmailVerificationRepository {
     }
 
     async invalidateAllByUserId(userId) {
-        return EmailVerificationToken.updateMany(
+        return await EmailVerificationToken.updateMany(
             {
                 userId, 
                 usedAt: null,
@@ -42,7 +42,7 @@ class EmailVerificationRepository {
     }
 
     async markAsUsed(tokenId) {
-        return EmailVerificationToken.findOneAndUpdate(
+        return await EmailVerificationToken.findOneAndUpdate(
             {
                 _id: tokenId,
                 usedAt: null,
@@ -59,7 +59,7 @@ class EmailVerificationRepository {
     }
 
     async deleteByUserId(userId) {
-        return EmailVerificationToken.deleteMany({
+        return await EmailVerificationToken.deleteMany({
             userId,
         });
     }

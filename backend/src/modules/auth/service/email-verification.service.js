@@ -8,7 +8,7 @@ import {emailVerificationRepository} from "../repository/email-verification.repo
 class EmailVerificationService {
      async create(userId, requestMetadata = {}) {
 
-        const user = userRepository.findById(userId) 
+        const user = await userRepository.findById(userId) 
         if(!user) {
             throw new UserAccountNotActiveError()
         }
@@ -29,22 +29,26 @@ class EmailVerificationService {
             user._id
         );
 
-        const tokenData = await emailVerificationRepository.create({
-            user: userId,
+          // save new verification token
+        await emailVerificationRepository.create({
+            user: user._id,
             tokenHash: generatedHashToken,
             expiresAt,
-            createdByIp:
-                requestMetadata.ipAddress ?? null,
+            createdByIp: requestMetadata.ipAddress ?? null
         });
 
+
         const verificationUrl =
-            `${Env.API_BASE_URL}/api/v1/auth/verify-token` +
+            `${Env.API_BASE_URL}/api/v1/auth/verify-email` +
             `?token=${encodeURIComponent(rawToken)}`;
 
         return {
             verificationUrl,
             expiresAt
         }
-}}
+}
 
-export const emailVerificationService = new EmailVerificationService()
+}
+export const emailVerificationService = new EmailVerificationService();
+
+

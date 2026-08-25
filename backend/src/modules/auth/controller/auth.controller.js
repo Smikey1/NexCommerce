@@ -13,9 +13,20 @@ class AuthController {
 
     register = asyncHandler(async (req, res) => {
         const result = await authService.register(req.body);
+        
         return res.status(HTTP_STATUS_CODE.CREATED).json(success(AUTH_SUCCESS.REGISTER, toRegisterResponse(result)));
+    });
+
+      verifyEmail = asyncHandler(async (req, res) => {
+
+        const { token } = req.query;
+
+        const result = await authService.verifyEmail(token);
+
+        return res.status(HTTP_STATUS_CODE.OK).json(success(AUTH_SUCCESS.EMAIL_VERIFIED, result)
+        );
     });
 }
 
 
-export const authController = new AuthController();    
+export const authController = new AuthController();

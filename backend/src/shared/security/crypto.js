@@ -18,15 +18,17 @@ export const generateApiKey = () => {
 
 };
 
+export const hashToken = (token) => {
+   return crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
+};
 
 
 export const hashApiKey = (key) => {
-
-
-    return crypto
+  return crypto
         .createHash("sha256")
         .update(key)
         .digest("hex");
-
-
 };
