@@ -1,11 +1,11 @@
 import { EmailVerificationToken } from "../model/email-verification-token.model.js";
 
-class EmailVerificationRepository {
+export class EmailVerificationRepository {
     async create(data) {
         return await EmailVerificationToken.create(data);
     }
 
-    async findValidByTokenHash(tokenHash) {
+    async findValidTokenByHash(tokenHash) {
         return EmailVerificationToken.findOne({
             tokenHash,
             usedAt: null,
@@ -64,5 +64,3 @@ class EmailVerificationRepository {
         });
     }
 }
-
-export const emailVerificationRepository = new EmailVerificationRepository();

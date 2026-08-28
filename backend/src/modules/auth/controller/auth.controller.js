@@ -1,4 +1,3 @@
-import { authService } from "../service/auth.service.js";
 import { asyncHandler } from "../../../shared/utils/asyncHandler.js";
 import { success } from "../../../shared/utils/appResponse.js";
 import { toLoginResponse, toRegisterResponse } from "../mapper/auth.mapper.js";
@@ -6,14 +5,20 @@ import { HTTP_STATUS_CODE } from "../../../shared/constant/httpStatusCode.js";
 import { AUTH_SUCCESS } from "../constant/auth.success.js";
 import { Env } from "../../../shared/env/env.js";
 
-class AuthController {
+export class AuthController {
+    /**
+     * @param {import("../service/auth.service.js").AuthService} authService
+     */
+    constructor(authService) {
+        this.authService = authService;
+    }
     login = asyncHandler(async(req, res)=>{
         const requestMetadata = {
             ipAddress: req.ip,
             userAgent: req.get("user-agent"),
         }
 
-        const result = await authService.login(
+        const result = await this.authService.login(
             req.body, 
             requestMetadata
         );
@@ -47,7 +52,7 @@ class AuthController {
     refreshAccessToken = asyncHandler(
         async(req, res) => {
             const refreshToken = req.cookies?.refreshToken;
-            const result = await authService.refreshToken(refreshToken);
+            const result = await this.authService.refreshToken(refreshToken);
 
             res.cookie("refreshToken", result.refreshToken, {
                 httpOnly: true,
@@ -62,21 +67,14 @@ class AuthController {
     )
 
     register = asyncHandler(async (req, res) => {
-        const result = await authService.register(req.body);
+        const result = await this.authService.register(req.body);
         
         return res.status(HTTP_STATUS_CODE.CREATED).json(success(AUTH_SUCCESS.REGISTER, toRegisterResponse(result)));
     });
 
-      verifyEmail = asyncHandler(async (req, res) => {
-
+    verifyEmail = asyncHandler(async (req, res) => {
         const { token } = req.query;
-
-        const result = await authService.verifyEmail(token);
-
-        return res.status(HTTP_STATUS_CODE.OK).json(success(AUTH_SUCCESS.EMAIL_VERIFIED, result)
-        );
+        await this.authService.verifyEmail(token);
+        return res.status(HTTP_STATUS_CODE.OK).json(success(AUTH_SUCCESS.EMAIL_VERIFIED));
     });
 }
-
-
-export const authController = new AuthController();

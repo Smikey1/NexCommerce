@@ -1,12 +1,12 @@
 import { slugify } from "../../utils/slugify.js"
 
-export const CreateCategoryRequest = (requestData) => {
-   const {name, description, adminId} = requestData
+export const CreateCategoryRequest = (requestData, createdBy) => {
+   const { name, description } = requestData
 return {
    name,
    slug: slugify(name),
    description,
    isActive: true, 
-   createdBy: adminId, 
+   createdBy:createdBy, 
 }
 }

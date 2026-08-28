@@ -1,7 +1,7 @@
 import { inAppService as notificationService } from "../channel/in_app/in-app.service.js";
 
-export const createNotification = async (req, res, next) => {
-    const ns = await notificationService.createNotification(req.body)
+export const createNotification = async (req, res) => {
+    const ns = await notificationService.create(req.body)
     res.status(200).json({
         success: true,
         data: ns,

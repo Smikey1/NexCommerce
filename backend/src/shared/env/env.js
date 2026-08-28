@@ -2,9 +2,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const Env = {
-    FRONTEND_URL: process.env.FRONTEND_URL,
-    MONGO_URI: process.env.MONGO_URI,
     PORT: process.env.PORT,
+    MONGO_URI: process.env.MONGO_URI,
+    SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL,
+    SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD,
+    SUPER_ADMIN_PHONE: process.env.SUPER_ADMIN_PHONE,
+
+    FRONTEND_URL: process.env.FRONTEND_URL,
+    
     ACCESS_TOKEN_SECRET_KEY: process.env.ACCESS_TOKEN_SECRET_KEY,
     REFRESH_TOKEN_SECRET_KEY: process.env.REFRESH_TOKEN_SECRET_KEY,
     ACCESS_TOKEN_EXPIRATION_MS: Number(process.env.ACCESS_TOKEN_EXPIRATION_MS),

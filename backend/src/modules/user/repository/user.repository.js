@@ -1,6 +1,6 @@
 import { User } from "../model/user.model.js";
 
-class UserRepository {
+export class UserRepository {
     async create(data) {
         return await User.create(data);
     }
@@ -40,5 +40,3 @@ class UserRepository {
         );
     }
 }
-
-export const userRepository = new UserRepository();

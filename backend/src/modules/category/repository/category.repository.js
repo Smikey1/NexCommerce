@@ -1,6 +1,6 @@
 import { Category } from "../model/category.model.js";
 
-class CategoryRepository {
+export class CategoryRepository {
     async create(data) {
         return Category.create(data);
     }
@@ -10,7 +10,7 @@ class CategoryRepository {
     }
 
     async findBySlug(slug) {
-        return Category.findOne({slug});
+        return Category.findOne({ slug }).lean();;
     }
 
     async updateBySlug(slug, data) {
@@ -29,5 +29,3 @@ class CategoryRepository {
         return Category.findOneAndUpdate({slug}, {isActive:false}, {new: true});
     }
 }
-
-export const categoryRepository= new CategoryRepository();

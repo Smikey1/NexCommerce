@@ -1,16 +1,16 @@
-@BASE_URL = http://localhost:5000/api/v1/categories
-@TOKEN = 1
+@BASE_URL = http://localhost:5500/api/v1/categories
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTkxMzg2YWE4OGEwMGJjMDk2MWJjMzIiLCJyb2xlIjoiNmE5MTM2NzRlYjg0MTBiYjRhNDc2YjQwIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc4NzkwMjE2NiwiZXhwIjoxNzg4ODAyMTY2fQ.gLefbp_rlmzSJB-iGsHt4s3WohPBxb44Xd0IjoFxCpo
 @REFRESH_TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YTY3MWZhYmYzNDY1ZTc2YjM4NTdlM2EiLCJzZXNzaW9uSWQiOiJhYTlkMDlmYS05MGViLTRkNWItYjYyYy0xYmM2MTdkYzA3M2IiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4NTE5ODU4MCwiZXhwIjoxNzg1ODAzMzgwfQ.1-khiC9gwa_fIz5p3MfHtreh7uV8ozQJV7lRPSHIQxk
 
 
 ### Create Category 
 POST {{BASE_URL}}/
 Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
 
 {
   "name": "Fashion Boots",
-  "description": "This is a fashion shoes.",
-  "adminId": "6a70757fe3661971f0b68069"
+  "description": "This is a fashion shoes."
 }
 
 ### Get All Categories
@@ -24,9 +24,10 @@ Content-Type: application/json
 ### Update Category By Name
 PATCH {{BASE_URL}}/fashion boots
 Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
 
 {
-  "name": "cute boots",
+  "name": "yellow boots",
   "description": "This is new fashionable boots."
 }
 

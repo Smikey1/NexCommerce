@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { USER_CONSTANT } from "../../user/constant/user.constant.js";
 
 const categorySchema = new mongoose.Schema({
     name: {
@@ -33,7 +34,7 @@ const categorySchema = new mongoose.Schema({
 
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: USER_CONSTANT.USER_MODEL,
         required: true
     },
 }, {
