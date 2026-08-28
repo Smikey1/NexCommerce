@@ -5,6 +5,7 @@ import { errorHandler } from "./shared/middlewares/errorHandler.js";
 import { authModule } from "./modules/auth/auth.module.js"
 import { notificationModule } from "./modules/notification/notification.module.js";
 import { categoryModule } from "./modules/category/category.module.js"
+import { rbacModule } from "./modules/rbac/rbac.module.js"
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 authModule(app);
 notificationModule(app);
 categoryModule(app);
+rbacModule(app);
 
 //custom middleware
 app.use(errorHandler);

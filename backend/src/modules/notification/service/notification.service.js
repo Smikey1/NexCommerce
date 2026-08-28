@@ -1,12 +1,8 @@
-import { NOTIFICATION_CHANNEL, NOTIFICATION_STATUS } from "../constant/notification.constant.js";
-import { notificationRepository } from "../repository/notification.repository.js";
+import { NOTIFICATION_CHANNEL } from "../constant/notification.constant.js";
 import { emailService } from "../channel/email/email.service.js";
 import { smsService } from "../channel/sms/sms.service.js";
 import { pushService } from "../channel/push/push.service.js";
 import { inAppService } from "../channel/in_app/in-app.service.js"
-import { HTML_TEMPLATE } from "../templates/html.template.js"
-import { UserNotFoundError } from "../../auth/error/user-not-found.error.js";
-import { templateService } from "../templates/template.service.js";
 
 class NotificationService {
     /**

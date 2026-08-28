@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import { Env } from "../env/env.js";
 import { TokenType } from "../constant/constant.js";
+import { UnauthorizedError } from "../error/unauthorized.error.js";
+import { ERROR_MESSAGE } from "../constant/error-message.js";
 
 export const generateAccessToken = (userId, role) => {
     return jwt.sign(
@@ -58,8 +60,10 @@ const verifyToken = (token, secretKey) => {
             error instanceof jwt.JsonWebTokenError ||
             error instanceof jwt.NotBeforeError
         ) {
-            return null;
+            throw new UnauthorizedError(
+                ERROR_MESSAGE.ACCESS_TOKEN_INVALID_OR_EXPIRED
+            );
         }
-        throw error;
+        throw error
     }
 };

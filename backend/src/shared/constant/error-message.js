@@ -22,4 +22,14 @@ export const ERROR_MESSAGE = Object.freeze({
 
     // Auth related
   ACCESS_TOKEN_INVALID_OR_EXPIRED: "Access token is invalid or expired.",
+  ACCESS_TOKEN_REQUIRED: "Access token required.",
+
+  USER_ROLE_REQUIRED: "User Role Required",
+  USER_NOT_FOUND: "User not found",
+
+  // RBAC related
+  PERMISSION_NOT_FOUND: "Permission not found.",
+  SUPER_ADMIN_ROLE_NOT_FOUND: "SUPER_ADMIN role not found. Run role seeder first.",
+  SUPER_ADMIN_EMAIL_PASSWORD_REQUIRED: "Super admin either email, password and phone are required.",
+  SUPER_ADMIN_ALREADY_EXIST: "Super admin already exists with this email."
 });

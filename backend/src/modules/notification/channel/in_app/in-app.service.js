@@ -1,8 +1,5 @@
 import { NOTIFICATION_CHANNEL, NOTIFICATION_STATUS } from "../../constant/notification.constant.js";
 import { notificationRepository } from "../../repository/notification.repository.js";
-import { emailService } from "../email/email.service.js";
-import { smsService } from "../sms/sms.service.js";
-import { pushService } from "../push/push.service.js";
 
 class InAppService {
     async create(data) {

@@ -14,7 +14,7 @@ import { EXCHANGES } from "../constant/exchange.constant.js";
  * @returns {Promise<void>} Resolves once the message has been published.
  */
 export const publishEvent = async ({
-    exchange = EXCHANGES.COMMERCE_EVENTS,
+    exchange = EXCHANGES.NEX_COMMERCE_EVENTS,
     routingKey,
     payload,
 }) => {

@@ -1,14 +1,19 @@
 import { Env } from "../../../shared/env/env.js";
-import {userRepository} from "../../user/repository/user.repository.js"
 import { UserAccountNotActiveError } from "../error/user-not-active.error.js";
-import {generateRawAndHashToken} from "../../../shared/security/crypto.js"
+import { generateRawAndHashToken} from "../../../shared/security/crypto.js"
 
-import {emailVerificationRepository} from "../repository/email-verification.repository.js"
+export class EmailVerificationService {
+    /**
+     * @param {import("../../user/service/user.service.js").UserService} userService
+     * @param {import("../repository/email-verification.repository.js").EmailVerificationRepository} emailVerificationRepository
+     */
+    constructor(userService, emailVerificationRepository) {
+        this.userService = userService;
+        this.emailVerificationRepository = emailVerificationRepository;
+    }
 
-class EmailVerificationService {
-     async create(userId, requestMetadata = {}) {
-
-        const user = await userRepository.findById(userId) 
+    async create(userId, requestMetadata = {}) {
+        const user = await this.userService.findById(userId) 
         if(!user) {
             throw new UserAccountNotActiveError()
         }
@@ -17,20 +22,16 @@ class EmailVerificationService {
             return;
         }
 
-        const { rawToken, hashToken: generatedHashToken } =
-            generateRawAndHashToken();
+        const { rawToken, hashToken: generatedHashToken } = generateRawAndHashToken();
 
         const expiresAt = new Date(
-            Date.now() +
-                Env.EMAIL_VERIFICATION_EXPIRATION_MS
+            Date.now() + Env.EMAIL_VERIFICATION_EXPIRATION_MS
         );
 
-        await emailVerificationRepository.invalidateAllByUserId(
-            user._id
-        );
+        await this.emailVerificationRepository.invalidateAllByUserId( user._id);
 
-          // save new verification token
-        await emailVerificationRepository.create({
+            // save new verification token
+        await this.emailVerificationRepository.create({
             user: user._id,
             tokenHash: generatedHashToken,
             expiresAt,
@@ -46,9 +47,13 @@ class EmailVerificationService {
             verificationUrl,
             expiresAt
         }
-}
+    }
+
+    invalidateAllByUserId = async (userId) => {
+        return this.emailVerificationRepository.invalidateAllByUserId(userId)
+    }
+    findValidTokenByHash =async (tokenHash) => {
+        return this.emailVerificationRepository.findValidTokenByHash(tokenHash)
+    }
 
 }
-export const emailVerificationService = new EmailVerificationService();
-
-

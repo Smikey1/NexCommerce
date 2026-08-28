@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { USER_CONSTANT } from "../constant/user.constant.js";
+import { RBAC_CONSTANT } from "../../rbac/constants/rbac.constants.js";
 
 const userSchema = new mongoose.Schema({
   firstName:{
@@ -30,9 +31,8 @@ const userSchema = new mongoose.Schema({
     select: false 
   },
   role: {
-    type: String,
-    enum: ["user", "admin"],
-    default: "user",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: RBAC_CONSTANT.ROLE_MODEL
   },
   isEmailVerified: {
     type: Boolean,

@@ -1,5 +1,4 @@
-import { userRepository } from "../../user/repository/user.repository.js";
-import { generateAccessToken, generateRefreshToken } from "../../../shared/security/jwt.js";
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../../../shared/security/jwt.js";
 import { UserUnauthorizedError } from "../error/user-unauthorized.error.js";
 import { UserAccountNotActiveError } from "../error/user-not-active.error.js";
 import { LoginRequest } from "../dto/request/login.request.js";
@@ -8,23 +7,30 @@ import { UserAlreadyExistError } from "../error/user-already-exist.error.js";
 import { AUTH_ERROR } from "../constant/auth.error.js";
 import { compare, hash } from "../../../shared/security/password.js";
 import { userEventPublisher } from "../../../messaging/events/user.event.js";
-import { NOTIFICATION_CHANNEL } from "../../notification/constant/notification.constant.js";
-import { HTML_TEMPLATE } from "../../notification/templates/html.template.js";
 import { InvalidEmailVerifiedTokenError } from "../error/invalid-email-verification-token.error.js";
-import {emailVerificationRepository} from "../repository/email-verification.repository.js";
-import {hashToken} from "../../../shared/security/crypto.js";
+import { hashToken } from "../../../shared/security/crypto.js";
 import { randomUUID } from "crypto";
 import { sessionRepository } from "../repository/session.repository.js";
 import { Env } from "../../../shared/env/env.js";
 import { TokenType } from "../../../shared/constant/constant.js";
-import {EmailNotVerifiedError} from "../error/user-email-not-verified.error.js";
+import { EmailNotVerifiedError } from "../error/user-email-not-verified.error.js";
+import { EmailVerificationTokenExpiredError } from "../error/email-verification-token-expired.error.js"
 
-class AuthService {
+export class AuthService {
+    /**
+     * @param {import("../../user/service/user.service.js").UserService} userService
+     * @param {import("../service/email-verification.service.js").EmailVerificationService} emailVerificationService
+     */
+    constructor(userService, emailVerificationService) {
+        this.userService = userService;
+        this.emailVerificationService = emailVerificationService;
+    }
+
     async login(data, requestMetadata= {}) {
         const {email,password,phoneNumber} = LoginRequest(data); 
         const normalizedEmail = email.toLowerCase().trim();
 
-        const user = await userRepository.findByEmailOrPhoneWithPassword(normalizedEmail, phoneNumber);
+        const user = await this.userService.findByEmailOrPhoneWithPassword(normalizedEmail, phoneNumber);
 
         if (!user) {
             throw new UserUnauthorizedError();
@@ -84,8 +90,8 @@ class AuthService {
         const trimmedEmail = email.trim().toLowerCase();
         const trimmedPhoneNumber = phoneNumber.trim();
 
-        const userWithEmailExist = await userRepository.findByEmail(trimmedEmail);
-        const userWithPhoneNumberExist = await userRepository.findByPhone(trimmedPhoneNumber);
+        const userWithEmailExist = await this.userService.findByEmail(trimmedEmail);
+        const userWithPhoneNumberExist = await this.userService.findByPhone(trimmedPhoneNumber);
 
 
         if(userWithEmailExist){
@@ -102,7 +108,7 @@ class AuthService {
                 phone: userWithEmailExist.phone
              };
 
-            await userEventPublisher.created(userDataPayload);
+            userEventPublisher.created(userDataPayload);
 
         return userWithEmailExist;
         }
@@ -121,14 +127,14 @@ class AuthService {
                 phone: userWithPhoneNumberExist.phone
             };
 
-            await userEventPublisher.created(userDataPayload);
+            userEventPublisher.created(userDataPayload);
 
         return userWithPhoneNumberExist;
         }
 
         const hashPassword = await hash(password);
         
-        const result = await userRepository.create({ 
+        const result = await this.userService.create({ 
             firstName, 
             lastName, 
             email: trimmedEmail, 
@@ -158,7 +164,7 @@ class AuthService {
 
         const generatedHashToken = hashToken(rawToken);
 
-        const verificationToken = await emailVerificationRepository.findValidByTokenHash(generatedHashToken);
+        const verificationToken = await this.emailVerificationService.findValidTokenByHash(generatedHashToken);
 
     
         if (!verificationToken) {
@@ -169,7 +175,7 @@ class AuthService {
             throw new EmailVerificationTokenExpiredError();
         }
 
-        const user = await userRepository.findById(
+        const user = await this.userService.findById(
             verificationToken.user
         );
 
@@ -181,9 +187,9 @@ class AuthService {
             return {message: "Email is already verified."} // 
         };
 
-        await userRepository.markEmailAsVerified(user._id);
+        await this.userService.markEmailAsVerified(user._id);
 
-        await emailVerificationRepository.invalidateAllByUserId(
+        await this.emailVerificationService.invalidateAllByUserId(
             user._id
         );
 
@@ -240,7 +246,7 @@ class AuthService {
                 throw new UserUnauthorizedError();
             }
 
-            const user = await userRepository.findById(payload.userId);
+            const user = await this.userService.findById(payload.userId);
 
             if (!user) {
                 await sessionRepository.revokeBySessionId(payload.sessionId);
@@ -279,7 +285,3 @@ class AuthService {
         };
 
 }
-
-
-
-export const authService = new AuthService();
