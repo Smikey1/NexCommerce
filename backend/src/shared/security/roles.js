@@ -35,6 +35,16 @@ export const PERMISSIONS = {
     // COUPON_CREATE: "coupon:create",
     // COUPON_UPDATE: "coupon:update",
     // COUPON_DELETE: "coupon:delete",
+
+    PERMISSION_READ: "permission:read",
+    PERMISSION_CREATE: "permission:create",
+    PERMISSION_UPDATE: "permission:update",
+    PERMISSION_DELETE: "permission:delete",
+
+    ROLE_READ: "role:read",
+    ROLE_CREATE: "role:create",
+    ROLE_UPDATE: "role:update",
+    ROLE_DELETE: "role:delete",
 };
 
 

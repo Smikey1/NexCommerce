@@ -39,4 +39,9 @@ export class UserRepository {
             }
         );
     }
+
+    assignRoleToUser = async (roleId, userId) => {
+        const user = await User.findByIdAndUpdate(userId, {role: roleId}, {new: true});
+        return user;
+    }
 }

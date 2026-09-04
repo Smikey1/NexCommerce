@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { RBAC_CONSTANT } from "../constants/rbac.constants.js";
+import { USER_CONSTANT } from "../../user/constant/user.constant.js";
 
 const permissionSchema = new mongoose.Schema(
     {
@@ -40,20 +41,17 @@ const permissionSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
+
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: USER_CONSTANT.USER_MODEL,
+            required: true,
+        }
     },
     {
         timestamps: true,
     }
 );
-
-// Automatically generate permissionKey
-permissionSchema.pre("validate", function (next) {
-    if (this.resource && this.action) {
-        this.permissionKey = `${this.resource}:${this.action}`;
-    }
-
-    next();
-});
 
 permissionSchema.index(
     { resource: 1, action: 1 },

@@ -1,5 +1,6 @@
 import mongoose from "mongoose"; 
 import { RBAC_CONSTANT } from "../constants/rbac.constants.js";
+import { USER_CONSTANT } from "../../user/constant/user.constant.js";
 
 const roleSchema = new mongoose.Schema(
     {
@@ -19,6 +20,16 @@ const roleSchema = new mongoose.Schema(
         description: {
             type: String,
             trim: true
+        }, 
+
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: USER_CONSTANT.USER_MODEL
+        },
+
+        lastUpdatedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: USER_CONSTANT.USER_MODEL
         },
 
         permissions: [

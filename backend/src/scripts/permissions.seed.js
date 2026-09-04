@@ -47,6 +47,24 @@ export const seedPermissions = async () => {
             action: "delete",
             description: "Allows deleting products"
         },
+        {
+            name: "Permission Create",
+            resource: "permission",
+            action: "create",
+            description: "Allows creating new permission"
+        },
+         {
+            name: "Permission Update",
+            resource: "permission",
+            action: "update",
+            description: "Allows updating existing permission"
+        },
+        {
+            name: "Permission View",
+            resource: "permission",
+            action: "read",
+            description: "Allows viewing permission"
+        },
     ];
 
     for (const permission of permissions) {

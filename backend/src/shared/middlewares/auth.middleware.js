@@ -2,7 +2,7 @@ import { verifyAccessToken } from "../security/jwt.js";
 import { ForbiddenError } from "../error/forbidden.error.js"
 import { UnauthorizedError } from "../error/unauthorized.error.js"
 import { ERROR_MESSAGE } from "../constant/error-message.js";
-import { rbacService } from "../../modules/rbac/service/rbac.service.js";
+import { rbacService } from "../../modules/rbac/rbac.api.js";
 import { userService } from "../../modules/user/user.api.js";
 
 export const authenticate = async (req, res, next) => {

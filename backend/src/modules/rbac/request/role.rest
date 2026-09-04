@@ -1,0 +1,67 @@
+@BASE_URL = http://localhost:5500/api/v1/rbac/roles
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTk4YmJmYzIyZTFhYmY3NzE2NDdjMzIiLCJyb2xlIjoiNmE5NmIwZDg0ZTBhMDU0Mjc5ZjBmM2M4IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc4ODM5NzA2MywiZXhwIjoxNzg5Mjk3MDYzfQ.TH-6yj9pqEqzqPRwQF3ionaeFxuLA0eO9sJDoPLYc5w
+@REFRESH_TOKEN = 1
+
+
+### Get All Roles
+GET {{BASE_URL}}/
+Authorization: Bearer {{{TOKEN}}
+
+### Get Active Roles
+GET {{BASE_URL}}/active
+Authorization: Bearer {{TOKEN}}
+
+### Get Inactive Roles
+GET {{BASE_URL}}/inactive
+Authorization: Bearer {{TOKEN}}
+
+### Create Admin Role
+POST {{BASE_URL}}/
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+{
+    "name": "ADMIN",
+    "description": "Administrator with system management permissions"
+}
+
+### Get Role By ID
+GET {{BASE_URL}}/
+Authorization: Bearer {{TOKEN}}
+
+
+### Get Role By Name
+GET {{BASE_URL}}/name?roleName=USER
+Authorization: Bearer {{TOKEN}}
+
+
+### Update Role
+PATCH {{BASE_URL}}/
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+{
+    "description": "Manages products, categories and inventory"
+}
+
+
+### Assign Permissions
+PATCH {{BASE_URL}}/6a96b1114e0a054279f0f3d0/assign-permissions
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+{
+    "permissions": [
+        "product:create"
+    ]
+}
+
+
+### Deactivate Role
+PATCH {{BASE_URL}}/
+Authorization: Bearer{{TOKEN}}
+
+
+### Activate Role
+PATCH {{BASE_URL}}/roles/1/activate
+Authorization: Bearer {{TOKEN}}

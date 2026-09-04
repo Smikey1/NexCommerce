@@ -37,6 +37,9 @@ export const requirePermissions = (...requiredPermissions) => {
 
         if (!permissions) return;
 
+        console.log(requiredPermissions);
+        
+
         const missingPermissions = requiredPermissions.filter(
             permission => !permissions.has(permission)
         );

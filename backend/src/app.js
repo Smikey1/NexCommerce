@@ -6,6 +6,7 @@ import { authModule } from "./modules/auth/auth.module.js"
 import { notificationModule } from "./modules/notification/notification.module.js";
 import { categoryModule } from "./modules/category/category.module.js"
 import { rbacModule } from "./modules/rbac/rbac.module.js"
+import { userModule } from "./modules/user/user.module.js"
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 
 // modules use here.
 authModule(app);
+userModule(app);
 notificationModule(app);
 categoryModule(app);
 rbacModule(app);
