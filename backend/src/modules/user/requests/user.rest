@@ -1,13 +1,33 @@
 @BASE_URL = http://localhost:5500/api/v1/user
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTk4YmJmYzIyZTFhYmY3NzE2NDdjMzIiLCJyb2xlIjoiNmE5NmIwZDg0ZTBhMDU0Mjc5ZjBmM2M4IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc4ODM5NDYwNiwiZXhwIjoxNzg5Mjk0NjA2fQ.yclkv6AF7NhNki_yAFnluvj65PDT5RXKTHfq60VDOyQ
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTliNTBiNDA3MTBlYzI5YzM0Njk3MjQiLCJyb2xlIjoiNmE5NmIxMTE0ZTBhMDU0Mjc5ZjBmM2QwIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc4ODc3MDU2MywiZXhwIjoxNzg5NjcwNTYzfQ.xMFwSp-ZyI-hNfCAlLCfpBudJ9ifVERcDhQA4fxrmTk
 
+@SUPER_AUTH_TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTk4YmJmYzIyZTFhYmY3NzE2NDdjMzIiLCJyb2xlIjoiNmE5NmIwZDg0ZTBhMDU0Mjc5ZjBmM2M4IiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc4OTE2OTkzMiwiZXhwIjoxNzkwMDY5OTMyfQ._BQt2eS4trLFHVO61wBvzO5KKslhoVP403eWTPpF4Ck
 
 ### Assign Role to User
 PATCH {{BASE_URL}}/assign-role 
 Content-Type: application/json
-Authorization: Bearer {{TOKEN}}
+Authorization: Bearer {{SUPER_AUTH_TOKEN}}
 
 {
-  "userId": "6a98bce0dbf2e02c3faa161c",
+  "userId": "6a9b50b40710ec29c3469724",
   "roleId": "6a96b1114e0a054279f0f3d0"
 }
+
+
+### Deactivating User
+PATCH {{BASE_URL}}/deactivate
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+
+### Activating User
+PATCH {{BASE_URL}}/activate
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+
+### Get My profile
+GET {{BASE_URL}}/me
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+

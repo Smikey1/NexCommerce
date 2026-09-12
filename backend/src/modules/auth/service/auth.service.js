@@ -15,15 +15,18 @@ import { Env } from "../../../shared/env/env.js";
 import { TokenType } from "../../../shared/constant/constant.js";
 import { EmailNotVerifiedError } from "../error/user-email-not-verified.error.js";
 import { EmailVerificationTokenExpiredError } from "../error/email-verification-token-expired.error.js"
+import {ROLES} from "../../../shared/security/roles.js";
 
 export class AuthService {
     /**
      * @param {import("../../user/service/user.service.js").UserService} userService
      * @param {import("../service/email-verification.service.js").EmailVerificationService} emailVerificationService
+     * @param {import("../../rbac/service/rbac.service.js").RbacService} rbacService 
      */
-    constructor(userService, emailVerificationService) {
+    constructor(userService, emailVerificationService, rbacService) {
         this.userService = userService;
         this.emailVerificationService = emailVerificationService;
+        this.rbacService = rbacService; 
     }
 
     async login(data, requestMetadata= {}) {
@@ -34,10 +37,6 @@ export class AuthService {
 
         if (!user) {
             throw new UserUnauthorizedError();
-        }
-
-        if (!user.isActive) {
-            throw new UserAccountNotActiveError(); 
         }
 
         
@@ -132,6 +131,8 @@ export class AuthService {
         return userWithPhoneNumberExist;
         }
 
+        const role = await this.rbacService.getRoleByName(ROLES.USER);
+
         const hashPassword = await hash(password);
         
         const result = await this.userService.create({ 
@@ -139,7 +140,9 @@ export class AuthService {
             lastName, 
             email: trimmedEmail, 
             phone: trimmedPhoneNumber, 
-            password:hashPassword }); 
+            password:hashPassword, 
+            role: role._id
+        }); 
         
         // http://localhost:5000/verify-email?token=1234
         // send verify email

@@ -10,7 +10,7 @@ try {
     await connectDB();
     await connectRabbitMQ()
     await createExchanges()
-    await startConsumers()
+    // await startConsumers()
 
     app.listen(PORT, () => {
         console.log(`🚀 Server running on http://localhost:${PORT}`);

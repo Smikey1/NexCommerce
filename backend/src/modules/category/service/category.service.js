@@ -12,59 +12,88 @@ export class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    async createCategory(data, createdBy) {
+    createCategory = async (data, createdBy) => {
         const request = CreateCategoryRequest(data, createdBy);
-        const existingCategory = await this.categoryRepository.findBySlug(request.slug);
+
+        const existingCategory =
+            await this.categoryRepository.findBySlug(request.slug);
 
         if (existingCategory) {
-            throw new CategoryAlreadyExistsError(); 
+            throw new CategoryAlreadyExistsError();
         }
-        const category = await Category.create(request);
+
+        const category = await this.categoryRepository.create(request);
+
         return category;
-    }
-    
-    async getAllCategory(){
+    };
+
+    getAllCategory = async () => {
         const categories = await this.categoryRepository.findAll();
 
         return categories;
-    }
+    };
 
-    async getCategoryByName(name){
+    getCategoryByName = async (name) => {
         const slug = slugify(name);
+
         const category = await this.categoryRepository.findBySlug(slug);
+
         if (!category) {
             throw new CategoryNotFoundError();
         }
-        return category; 
-    }
 
-    async updateByName(name, data) {
+        return category;
+    };
+
+    updateByName = async (name, data) => {
         const slug = slugify(name);
         const requestData = UpdateCategoryRequest(data);
-        const category = await this.categoryRepository.updateBySlug(slug, requestData);
+
+        const category = await this.categoryRepository.updateBySlug(
+            slug,
+            requestData
+        );
+
+        if (!category) {
+            throw new CategoryNotFoundError();
+        }
 
         return category;
-    }
+    };
 
-    async deleteByName(name) {
+    deleteByName = async (name) => {
         const slug = slugify(name);
+
         const category = await this.categoryRepository.deleteBySlug(slug);
 
-        return category; 
-    }
+        if (!category) {
+            throw new CategoryNotFoundError();
+        }
 
-    async markAsActive(name) { 
-        const slug = slugify(name);
-        const category = await this.categoryRepository.markAsActive(slug);
-        // TODO: #1 If not category
         return category;
-    }
+    };
 
-    async markAsInactive(name) {
+    markAsActive = async (name) => {
         const slug = slugify(name);
+
+        const category = await this.categoryRepository.markAsActive(slug);
+
+        if (!category) {
+            throw new CategoryNotFoundError();
+        }
+
+        return category;
+    };
+
+    markAsInactive = async (name) => {
+        const slug = slugify(name);
+
         const category = await this.categoryRepository.markAsInactive(slug);
 
-        return category; 
-    }
-    
+        if (!category) {
+            throw new CategoryNotFoundError();
+        }
+
+        return category;
+    };
 }

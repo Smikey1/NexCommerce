@@ -7,5 +7,7 @@ import { requirePermissions } from "../../../shared/middlewares/permission.middl
 const router = Router();
 
 router.patch("/assign-role", authenticate, requirePermissions(PERMISSIONS.USER_CREATE, PERMISSIONS.ROLE_UPDATE), userController.assignRoleToUser);
-
+router.patch("/activate", authenticate, userController.activateUser);
+router.patch("/deactivate", authenticate, userController.deactivateUser);
+router.get("/me", authenticate, userController.getMyProfile);
 export default router; 

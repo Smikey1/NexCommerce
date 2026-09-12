@@ -42,7 +42,7 @@ export class CategoryController {
         return res.status(HTTP_STATUS_CODE.OK).json(success(CATEGORY_SUCCESS.ACTIVATED, toCategoryResponse(category)));
     })
 
-    markAsInActive = asyncHandler(async(req,res) => {
+    markAsInactive = asyncHandler(async(req,res) => {
         const category = await this.categoryService.markAsInactive(req.params.name);
         return res.status(HTTP_STATUS_CODE.OK).json(success(CATEGORY_SUCCESS.DEACTIVATED, toCategoryResponse(category)));
     })

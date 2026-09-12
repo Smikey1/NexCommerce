@@ -64,7 +64,7 @@ export class RbacRepository {
     }
 
     getRoleByName = async (roleName) => {
-        const role = await Role.findOne({name: roleName});
+        const role = await Role.findOne({name: roleName}).populate("permissions");
         return role;
     }
 

@@ -11,8 +11,8 @@ router.post("/", authenticate, requirePermission(PERMISSIONS.CATEGORY_CREATE), c
 router.get("/:name", categoryController.getByName);
 router.get("/", categoryController.getAll);
 router.patch("/:name", authenticate, requirePermission(PERMISSIONS.CATEGORY_UPDATE), categoryController.updateByName);
-router.delete("/:name", categoryController.deleteByName);
-router.patch("/:name/activate", categoryController.markAsActive);
-router.patch("/:name/deactivate", categoryController.markAsInActive);
+router.delete("/:name", authenticate, requirePermission(PERMISSIONS.CATEGORY_DELETE), categoryController.deleteByName);
+router.patch("/:name/activate", authenticate, requirePermission(PERMISSIONS.CATEGORY_UPDATE), categoryController.markAsActive);
+router.patch("/:name/deactivate", authenticate, requirePermission(PERMISSIONS.CATEGORY_UPDATE), categoryController.markAsInactive);
 
 export default router; 

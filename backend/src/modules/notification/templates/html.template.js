@@ -2,7 +2,9 @@ import { templateService } from "./template.service.js"
 
 export const HTML_TEMPLATE = {
     WELCOME: "welcome.html",
-    "EMAIL_VERIFICATION":"email-verification.html"
+    EMAIL_VERIFICATION:"email-verification.html", 
+    USER_ACCOUNT_ACTIVATED: "user-account-activated.html", 
+    USER_ACCOUNT_DEACTIVATED: "user-account-deactivated.html"
 }
 
 export const getHTMLTemplate = async (templateName, templateVariables = {}) => {

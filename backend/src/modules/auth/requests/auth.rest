@@ -18,6 +18,6 @@ POST {{BASE_URL}}/login
 Content-Type: application/json
 
 {
-  "email": "kandelgrishma2477@gmail.com",
+  "email": "hello.grishma2477@gmail.com",
   "password": "Password123!"
 }

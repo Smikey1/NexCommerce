@@ -31,7 +31,7 @@ Authorization: Bearer {{TOKEN}}
 
 
 ### Get Role By Name
-GET {{BASE_URL}}/name?roleName=USER
+GET {{BASE_URL}}/name?roleName=admin
 Authorization: Bearer {{TOKEN}}
 
 

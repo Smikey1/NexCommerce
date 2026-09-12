@@ -3,5 +3,6 @@ export const RBAC_ERROR = {
     PERMISSION_NOT_FOUND: "Permission doesn't exists.",  
     ROLE_NOT_FOUND: "Role doesn't exists.",
     ROLE_ALREADY_EXISTS: "Role already exists.", 
+    ROLE_INACTIVE: "Role is inactive",
     ROLE_UPDATE_FAILED: "Failed to update role."
 }; 

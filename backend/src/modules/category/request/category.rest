@@ -1,7 +1,6 @@
 @BASE_URL = http://localhost:5500/api/v1/categories
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTkxMzg2YWE4OGEwMGJjMDk2MWJjMzIiLCJyb2xlIjoiNmE5MTM2NzRlYjg0MTBiYjRhNDc2YjQwIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc4NzkwMjE2NiwiZXhwIjoxNzg4ODAyMTY2fQ.gLefbp_rlmzSJB-iGsHt4s3WohPBxb44Xd0IjoFxCpo
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTliNTBiNDA3MTBlYzI5YzM0Njk3MjQiLCJyb2xlIjoiNmE5NmIxMTE0ZTBhMDU0Mjc5ZjBmM2QxIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc4ODU2MzcyNCwiZXhwIjoxNzg5NDYzNzI0fQ.gUte58opoeIuyt8aXcT9gzhTM_4wG7fr2ZSgIBZ1Ijk
 @REFRESH_TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YTY3MWZhYmYzNDY1ZTc2YjM4NTdlM2EiLCJzZXNzaW9uSWQiOiJhYTlkMDlmYS05MGViLTRkNWItYjYyYy0xYmM2MTdkYzA3M2IiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc4NTE5ODU4MCwiZXhwIjoxNzg1ODAzMzgwfQ.1-khiC9gwa_fIz5p3MfHtreh7uV8ozQJV7lRPSHIQxk
-
 
 ### Create Category 
 POST {{BASE_URL}}/
@@ -9,8 +8,8 @@ Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 {
-  "name": "Fashion Boots",
-  "description": "This is a fashion shoes."
+  "name": "Spring Bodycons",
+  "description": "This is a spring bodycons. m."
 }
 
 ### Get All Categories
@@ -18,27 +17,30 @@ GET {{BASE_URL}}/
 Content-Type: application/json
 
 ### Get Category By Name
-GET {{BASE_URL}}/fashion boots
+GET {{BASE_URL}}/Spring Bodycons
 Content-Type: application/json
 
 ### Update Category By Name
-PATCH {{BASE_URL}}/fashion boots
+PATCH {{BASE_URL}}/Spring Bodycons
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 {
-  "name": "yellow boots",
-  "description": "This is new fashionable boots."
+  "name": "yellow bodycons",
+  "description": "This is new yellow bodycons."
 }
 
 ### Delete Category By Name
-DELETE {{BASE_URL}}/new boots
+DELETE {{BASE_URL}}/yellow bodycons
 Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
 
 ### Mark Category As Active
-PATCH {{BASE_URL}}/new boots/activate
+PATCH {{BASE_URL}}/yellow boots/activate
 Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
 
 ### Mark Category As Inactive
-PATCH {{BASE_URL}}/new boots/deactivate
+PATCH {{BASE_URL}}/yellow boots/deactivate
 Content-Type: application/json
+Authorization: Bearer {{TOKEN}}

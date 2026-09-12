@@ -10,7 +10,15 @@ class UserEventPublisher {
             payload
         })
     }
-    
+
+    accountStatusUpdated = (payload) => {
+        publishEvent({
+            exchange: EXCHANGES.NOTIFICATION_EVENTS,
+            routingKey: ROUTING_KEYS.USER_UPDATED,
+            payload
+        })
+    }
+
 }
 
 export const userEventPublisher = new UserEventPublisher()

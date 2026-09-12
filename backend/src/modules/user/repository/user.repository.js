@@ -1,47 +1,89 @@
 import { User } from "../model/user.model.js";
 
 export class UserRepository {
-    async create(data) {
+
+    create = async (data) => {
         return await User.create(data);
-    }
+    };
 
-    async findByEmail(email) {
-        return await User.findOne({email}).select("+password");
-    }
+    findAll = async (filter = {}) => {
+        return await User.find(filter);
+    };
 
-    async findByPhone(phone) {
-        return await User.findOne({phone}).select("+password");
-    }
+    findByEmail = async (email) => {
+        return await User.findOne({ email }).select("+password");
+    };
 
-    async findByEmailOrPhoneWithPassword(email, phone) {
-        if (email !== null){
-            return this.findByEmail(email);
-        }else if (phone !== null){
-            return this.findByPhone(phone);
-        } else return null;
-    }
+    findByPhone = async (phone) => {
+        return await User.findOne({ phone }).select("+password");
+    };
 
-    async findById(id) {
-        return await User.findById(id);
-    }
+    findByEmailOrPhoneWithPassword = async (email, phone) => {
+        if (email) {
+            return await this.findByEmail(email);
+        }
 
-    async markEmailAsVerified(id) {
+        if (phone) {
+            return await this.findByPhone(phone);
+        }
+
+        return null;
+    };
+
+    findById = async (userId) => {
+        return await User.findById(userId).populate("role");
+    };
+
+    markEmailAsVerified = async (userId) => {
         return await User.findByIdAndUpdate(
-            id,
+            userId,
             {
-                $set: {
-                    isEmailVerified: true,
-                    emailVerifiedAt: new Date(),
-                },
+                isEmailVerified: true,
+                emailVerifiedAt: new Date()
+                
             },
             {
                 new: true,
+                runValidators: true
             }
         );
-    }
+    };
 
     assignRoleToUser = async (roleId, userId) => {
-        const user = await User.findByIdAndUpdate(userId, {role: roleId}, {new: true});
-        return user;
-    }
-}
+        return await User.findByIdAndUpdate(
+            userId,
+            {
+                role: roleId
+            },
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+    };
+
+    updateProfile = async (userId, data) => {
+        return await User.findByIdAndUpdate(
+            userId,
+            data,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+    };
+
+    updateUserStatus = async (userId, isActive) => {
+    const user =  await User.findByIdAndUpdate(
+        userId,
+        {
+            isActive:isActive
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+    return user;
+};
+} 

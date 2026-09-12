@@ -1,31 +1,44 @@
 import { Category } from "../model/category.model.js";
 
 export class CategoryRepository {
-    async create(data) {
+
+    create = async (data) => {
         return Category.create(data);
-    }
+    };
 
-    async findAll() {
+    findAll = async () => {
         return Category.find();
-    }
+    };
 
-    async findBySlug(slug) {
-        return Category.findOne({ slug }).lean();;
-    }
+    findBySlug = async (slug) => {
+        return Category.findOne({ slug }).lean();
+    };
 
-    async updateBySlug(slug, data) {
-    return Category.findOneAndUpdate({slug},data,{new:true});
-}
+    updateBySlug = async (slug, data) => {
+        return Category.findOneAndUpdate(
+            { slug },
+            data,
+            { new: true }
+        );
+    };
 
-    async deleteBySlug(slug) {
-        return Category.deleteOne({slug});
-    }
+    deleteBySlug = async (slug) => {
+        return Category.findOneAndDelete({ slug });
+    };
 
-    async markAsActive(slug) {
-        return Category.findOneAndUpdate({slug}, {isActive:true}, {new: true});
-    }
+    markAsActive = async (slug) => {
+        return Category.findOneAndUpdate(
+            { slug },
+            { isActive: true },
+            { new: true }
+        );
+    };
 
-    async markAsInactive(slug) {
-        return Category.findOneAndUpdate({slug}, {isActive:false}, {new: true});
-    }
+    markAsInactive = async (slug) => {
+        return Category.findOneAndUpdate(
+            { slug },
+            { isActive: false },
+            { new: true }
+        );
+    };
 }

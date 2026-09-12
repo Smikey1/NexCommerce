@@ -1,5 +1,6 @@
 import { BadRequestError } from "../../../shared/error/bad-request.error.js";
 import { ConflictError } from "../../../shared/error/conflict.error.js";
+import { ForbiddenError } from "../../../shared/error/forbidden.error.js";
 import { NotFoundError } from "../../../shared/error/not-found.error.js";
 import { RBAC_ERROR } from "../constants/rbac.error.js";
 import { CreatePermissionRequest } from "../dto/requests/permission.requests.js";
@@ -70,6 +71,9 @@ export class RbacService {
         const role = await this.rbacRepository.getRoleByName(roleName);
         if (!role) {
             throw new NotFoundError(RBAC_ERROR.ROLE_NOT_FOUND, roleName);
+        }
+        if(!role.isActive) {
+            throw new ForbiddenError(RBAC_ERROR.ROLE_INACTIVE)
         }
         return role; 
     }
